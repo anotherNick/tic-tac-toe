@@ -1,7 +1,5 @@
 const Gameboard = (() => {
 
-    let winner = false;
-    let draw = false;
     let freeSpaceCount = 9;
     const gameboard = 
         [['', '', ''],
@@ -19,7 +17,6 @@ const Gameboard = (() => {
             }
         }
         resetFreeSpaceCount();
-        resetWinner();
     }
 
     const getFreeSpaces = () => freeSpaceCount;
@@ -36,8 +33,6 @@ const Gameboard = (() => {
 
             gameboard[row][col] = token;
             removeFreeSpace();
-            checkForWinner(token);
-            checkForDraw();
             return true;
 
         }
@@ -45,36 +40,7 @@ const Gameboard = (() => {
         return false;
     }
     
-    const checkForDraw = () => { draw = (freeSpaceCount < 1);}
-
-    const getDraw = () => draw;
-
-    const getWinner = () => winner;
-
-    const checkForWinner = function(token) {
-     
-        const gb = getGameboard();
-   
-        if( (gb[0][0] === token && gb[0][1] === token && gb[0][2] === token)
-         || (gb[1][0] === token && gb[1][1] === token && gb[1][2] === token)
-         || (gb[2][0] === token && gb[2][1] === token && gb[2][2] === token)
-         || (gb[0][0] === token && gb[1][0] === token && gb[2][0] === token)
-         || (gb[0][1] === token && gb[1][1] === token && gb[2][1] === token)
-         || (gb[0][2] === token && gb[1][2] === token && gb[2][2] === token)
-         || (gb[0][0] === token && gb[1][1] === token && gb[2][2] === token)
-         || (gb[0][2] === token && gb[1][1] === token && gb[2][0] === token)
-        ) {
-            winner = true;
-        }
-    }
-
-    const resetWinner = () => {
-
-        winner = false;
-
-    }
-
-    return {getGameboard, getElement, placeToken, getWinner, getDraw, reset};
+    return {getGameboard, getElement, placeToken, getFreeSpaces, reset};
 
 })();
 
@@ -140,12 +106,12 @@ const GameController = (() => {
 
             DisplayController.updateGameboard();
 
-            if(Gameboard.getWinner()) {
+            if(isWinningMove(token)) {
                 
                 DisplayController.announce(`${player.name} Wins!`);
                 endGame();
 
-            } else if(Gameboard.getDraw()) {
+            } else if(isADraw()) {
                 
                 DisplayController.announce("It's a draw!");
                 endGame();
@@ -159,13 +125,34 @@ const GameController = (() => {
 
         }
 
-}
+    }
+
+    const isADraw = () => { return (Gameboard.getFreeSpaces() < 1);}
+
+    const isWinningMove = function(token) {
+     
+        const gb = Gameboard.getGameboard();
+   
+        if( (gb[0][0] === token && gb[0][1] === token && gb[0][2] === token)
+         || (gb[1][0] === token && gb[1][1] === token && gb[1][2] === token)
+         || (gb[2][0] === token && gb[2][1] === token && gb[2][2] === token)
+         || (gb[0][0] === token && gb[1][0] === token && gb[2][0] === token)
+         || (gb[0][1] === token && gb[1][1] === token && gb[2][1] === token)
+         || (gb[0][2] === token && gb[1][2] === token && gb[2][2] === token)
+         || (gb[0][0] === token && gb[1][1] === token && gb[2][2] === token)
+         || (gb[0][2] === token && gb[1][1] === token && gb[2][0] === token)
+        ) {
+            return true;
+        }
+
+        return false;
+    }
 
     const gbElement = Gameboard.getElement();
     gbElement.addEventListener('click', (e) => {
 
-        const x = e.target.closest('td').className.slice(-1);
-        const y = e.target.closest('tr').className.slice(-1);
+        const x = e.target.closest('td').dataset.colId;
+        const y = e.target.closest('tr').dataset.rowId;
         tryThisMove(x, y);
 
     });
@@ -210,12 +197,12 @@ const DisplayController = (() => {
 
     }
 
-    const gameAnnouncement = document.querySelector('#game-announcement');
+    const annModal = document.querySelector('#game-announcement');
     
     const announce = (msg) => {
 
-        gameAnnouncement.querySelector('#announcement-text').textContent = msg;
-        gameAnnouncement.showModal()
+        annModal.querySelector('#announcement-text').textContent = msg;
+        annModal.showModal()
         updateUserMessage("Choose player names and press start, or touch a square to begin!");
 
     }
@@ -223,7 +210,7 @@ const DisplayController = (() => {
     const announceCloseBtn = document.querySelector('#announcement-close');
     announceCloseBtn.addEventListener('click', () => {
 
-        gameAnnouncement.close();
+        annModal.close();
 
     });
 

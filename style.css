@@ -88,6 +88,8 @@ body {
     text-shadow: 2px 2px 2px black;
     padding: 12px;
     margin: auto;
+    position: relative;
+    z-index: 1:
 
 
 }
