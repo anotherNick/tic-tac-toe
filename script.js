@@ -153,7 +153,7 @@ const GameController = (() => {
             } else {
 
                 players.switchPlayer();
-                DisplayController.updateUserMessage(`${players.getCurrentPlayer().name} make your move!`)
+                DisplayController.updateUserMessage(`${player.name} make your move!`)
             
             }
 
