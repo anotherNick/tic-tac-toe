@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ultra&display=swap" rel="stylesheet">
+    <script src="script.js" defer></script>
+    <title>Tic Tac Toe!</title>
+</head>
+<body>
+    <div id="game-header">
+        <ul id="player-ui">
+            <li>
+                <label for="player-one-name">Player 1 Name:</label>
+                <input type="text" name="player-one-name">
+            </li>
+            <li>
+                <button id="start-game">Start Game!</button>
+            </li>
+            <li>    
+                <label for="player-two-name">Player 2 Name:</label>
+                <input type="text" name="player-two-name">
+            </li>
+        </ul>
+        <div id="game-messages">
+
+        </div>
+    </div>
+    <table id="gameboard">
+        <tr class="row0">
+            <td class="col0"><span></span></td>
+            <td class="col1"><span></span></td>
+            <td class="col2"><span></span></td>
+        </tr>
+        <tr class="row1">
+            <td class="col0"><span></span></td>
+            <td class="col1"><span></span></td>
+            <td class="col2"><span></span></td>
+        </tr>
+        <tr class="row2">
+            <td class="col0"><span></span></td>
+            <td class="col1"><span></span></td>
+            <td class="col2"><span></span></td>
+        </tr>
+    </table>
+</body>
+</html>

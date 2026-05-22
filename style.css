@@ -1,0 +1,43 @@
+:root {
+
+    --board-shadow: #773475;
+    --board-bg: #BF3475;
+    --primary-light: #05F2F2;
+    --primary-dark: #05DBF2;
+    --secondary-light: #F29B30;
+    --secondary-dark: #F25C05;
+}
+
+body {
+
+    background-color: var(--board-bg);
+
+}
+
+table {
+
+    border-collapse: collapse;
+    border-style: hidden;
+
+}
+
+td span {
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100px;
+    width: 100px;
+
+    font-family: 'Ultra', serif;
+    font-size: 95px;
+    text-shadow: 5px 5px 5px var(--board-shadow);
+
+}
+
+tr, td {
+
+    border: 16px solid var(--secondary-light);
+    color: var(--primary-dark);
+
+}
