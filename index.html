@@ -11,6 +11,10 @@
     <title>Tic Tac Toe!</title>
 </head>
 <body>
+    <dialog id="game-announcement">
+        <span id="announcement-text" class="pulsing-text"></span>
+        <button id="announcement-close">Return To Game</button>
+    </dialog>
     <div id="game-header">
         <ul id="player-ui">
             <li>
@@ -21,8 +25,8 @@
                 <button id="start-game">Start Game!</button>
             </li>
             <li>    
-                <label id="player-two-name" for="player-two-name">Player 2 Name:</label>
-                <input type="text" name="player-two-name">
+                <label for="player-two-name">Player 2 Name:</label>
+                <input id="player-two-name" type="text" name="player-two-name">
             </li>
         </ul>
         <div id="user-message">

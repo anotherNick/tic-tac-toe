@@ -142,12 +142,12 @@ const GameController = (() => {
 
             if(Gameboard.getWinner()) {
                 
-                DisplayController.updateUserMessage(`${player.name} Wins!`);
+                DisplayController.announce(`${player.name} Wins!`);
                 endGame();
 
             } else if(Gameboard.getDraw()) {
                 
-                DisplayController.updateUserMessage("It's a draw!");
+                DisplayController.announce("It's a draw!");
                 endGame();
             
             } else {
@@ -210,6 +210,23 @@ const DisplayController = (() => {
 
     }
 
-    return {updateGameboard, updateUserMessage};
+    const gameAnnouncement = document.querySelector('#game-announcement');
+    
+    const announce = (msg) => {
+
+        gameAnnouncement.querySelector('#announcement-text').textContent = msg;
+        gameAnnouncement.showModal()
+        updateUserMessage("Choose player names and press start, or touch a square to begin!");
+
+    }
+
+    const announceCloseBtn = document.querySelector('#announcement-close');
+    announceCloseBtn.addEventListener('click', () => {
+
+        gameAnnouncement.close();
+
+    });
+
+    return {updateGameboard, updateUserMessage, announce};
 
 })();
