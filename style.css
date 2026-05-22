@@ -19,12 +19,15 @@
 body {
 
     background-color: var(--board-bg);
+    font-family: "Roboto", sans-serif;
+    color: black;
 
 }
 
 #game-header {
 
     min-height: 100px;
+    margin-bottom: 32px;
 
 }
 
@@ -33,6 +36,68 @@ body {
     list-style: none;
     display: flex;
     justify-content: space-between;
+    padding: 16px;
+
+}
+
+@media screen and (max-width: 450px) {
+  #player-ui {
+    flex-flow: column;
+  }
+
+  #player-ui li {
+    margin-bottom: 7px;
+  }
+}
+
+
+#player-ui li {
+
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+#player-ui label {
+
+    display: block;
+    margin-bottom: 10px;
+    font-size: 1rem;
+    font-weight: 900;
+    color: var(--primary-light);
+
+}
+
+#player-ui input {
+
+    height: 1.5rem;
+    border-radius: 6px;
+    padding: 5px;
+
+}
+
+#start-game {
+
+    background-color: var(--secondary-light);
+    color: var(--primary-dark);
+    box-shadow: inset -3px -3px 0px 3px var(--secondary-dark);
+    border: 3px outset var(--board-shadow);
+    border-radius: 16px;
+    font-size: 1.5rem;
+    font-weight: 900;
+    text-shadow: 2px 2px 2px var(--secondary-dark);
+    padding: 7px;
+
+
+}
+
+#user-message {
+
+    text-align: center;
+    font-size: max(1rem, 3vmin);
+    font-weight: 900;
 
 }
 
@@ -41,19 +106,20 @@ body {
     border-collapse: collapse;
     border-style: hidden;
     margin: 0 auto;
+    width: max(300px, 80vmin);
+    height: max(300px, 80vmin);
 
 }
 
 td span {
 
     display: flex;
-    align-items: center;
     justify-content: center;
-    height: 100px;
-    width: 100px;
-
+    align-items: center;
+    width: max(100px, 25vmin);
+    height: max(100px, 25vmin);
     font-family: 'Ultra', serif;
-    font-size: 95px;
+    font-size: max(75px, 20vmin);
     text-shadow: 5px 5px 5px var(--board-shadow);
 
 }
