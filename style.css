@@ -1,3 +1,11 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 :root {
 
     --board-shadow: #773475;
@@ -14,10 +22,25 @@ body {
 
 }
 
-table {
+#game-header {
+
+    min-height: 100px;
+
+}
+
+#player-ui {
+
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+
+}
+
+#gameboard {
 
     border-collapse: collapse;
     border-style: hidden;
+    margin: 0 auto;
 
 }
 

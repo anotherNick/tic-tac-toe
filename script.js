@@ -10,6 +10,8 @@ const Gameboard = (() => {
     
     const getGameboard = () => gameboard;
 
+    const getElement = () => document.querySelector('#gameboard');
+
     const reset = () => {
         for(let row = 0; row < gameboard.length; row++){
             for(let col = 0; col < gameboard[row].length; col++){
@@ -72,19 +74,27 @@ const Gameboard = (() => {
 
     }
 
-    return {getGameboard, placeToken, getWinner, getDraw, reset};
+    return {getGameboard, getElement, placeToken, getWinner, getDraw, reset};
 
 })();
 
 
 
-function Players(playerOneName = "Player One", playerTwoName = "Player Two") {
+function Players() {
 
     let currentPlayer = 0;
-    const players = [{name: playerOneName,
-                      token: "O"},                     
-                     {name: playerTwoName,
-                      token: "X"}];
+
+    const players = (() => {
+        const playerOneName = document.querySelector('#player-one-name').value || 'Player One';
+        const playerTwoName = document.querySelector('#player-two-name').value || 'Player Two';
+        
+        return [{name: playerOneName,
+                 token: "O"},                     
+                {name: playerTwoName,
+                 token: "X"}];
+        
+
+    })();
 
     const getCurrentPlayer = () => players[currentPlayer];
 
@@ -103,17 +113,27 @@ function Players(playerOneName = "Player One", playerTwoName = "Player Two") {
 const GameController = (() => {
 
     let players;
+    let ongoingGame = false;
 
     const startNewGame = () => {
 
         Gameboard.reset();
         players = Players();
+        ongoingGame = true;
+
+    }
+
+    const endGame = () => {
+
+        ongoingGame = false;
 
     }
 
     const tryThisMove = (x, y) => {
 
-        const player = players.getCurrentPlayer();
+        if(!ongoingGame) { startNewGame(); }
+
+        let player = players.getCurrentPlayer();
         const token = player.token;
         
         if(Gameboard.placeToken(token, x, y)) {
@@ -122,23 +142,43 @@ const GameController = (() => {
 
             if(Gameboard.getWinner()) {
                 
-                alert(`${player.name} Wins!`);
-                startNewGame();
+                DisplayController.updateUserMessage(`${player.name} Wins!`);
+                endGame();
 
             } else if(Gameboard.getDraw()) {
                 
-                alert("It's a draw!");
-                startNewGame();
+                DisplayController.updateUserMessage("It's a draw!");
+                endGame();
             
             } else {
 
                 players.switchPlayer();
+                DisplayController.updateUserMessage(`${players.getCurrentPlayer().name} make your move!`)
             
             }
 
         }
 
 }
+
+    const gbElement = Gameboard.getElement();
+    gbElement.addEventListener('click', (e) => {
+
+        const x = e.target.closest('td').className.slice(-1);
+        const y = e.target.closest('tr').className.slice(-1);
+        tryThisMove(x, y);
+
+    });
+
+    const startButton = document.querySelector('#start-game');
+    startButton.addEventListener('click', () => {
+
+        startNewGame();
+        DisplayController.updateGameboard();
+        DisplayController.updateUserMessage(`${players.getCurrentPlayer().name} make your move!`)
+
+    });
+
 
     return {startNewGame, tryThisMove};
 })();
@@ -149,34 +189,27 @@ const DisplayController = (() => {
 
     const updateGameboard = () => {
 
-        const gameboard = Gameboard.getGameboard();
+        const gb = Gameboard.getGameboard();
+        const gbDisplay = Gameboard.getElement();
 
-        for(let r = 0; r < gameboard.length; r++){
-            
-            for(let c = 0; c < gameboard[r].length; c ++){
+        for(let r = 0; r < gb.length; r++){
+            for(let c = 0; c < gb[r].length; c ++){
                 
                 const thisCell = '.row' + r + ' .col' + c + " span";
-                const cell = document.querySelector(thisCell);
-                cell.textContent = gameboard[r][c];
+                const cell = gbDisplay.querySelector(thisCell);
+                cell.textContent = gb[r][c];
             
             }
-        
         }
+    }
+
+    const updateUserMessage = (msg) => {
+
+        const messageDisplay = document.querySelector('#user-message');
+        messageDisplay.textContent = msg;
 
     }
 
-    return {updateGameboard}
+    return {updateGameboard, updateUserMessage};
 
 })();
-
-
-const boardDisplay = document.querySelector('#gameboard');
-boardDisplay.addEventListener('click', (e) => {
-
-    const x = e.target.closest('td').className.slice(-1);
-    const y = e.target.closest('tr').className.slice(-1);
-    GameController.tryThisMove(x, y);
-
-})
-
-GameController.startNewGame();
